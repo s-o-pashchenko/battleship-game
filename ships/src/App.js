@@ -58,20 +58,33 @@ const randomCoords = {
   },
   generateShip(size) {
     const shipReady = this.check(size);
-    this.ships.busy.push(shipReady)
+    this.ships.busy.push(shipReady);
   },
   check(size) {
+    console.log('start');
     const shipToCheck = this.ship(size)
-    for (let i = 0; i < this.ships.busy.length; i++) {
-      for (let j = 0; j < size; j++) {
-        if (this.ships.busy[i].toString() == shipToCheck[j].toString()) {
-          return true
-        } else {
-          return shipToCheck;
+    if (!!this.ships.busy[0]) {
+      for (let i = 0; i < this.ships.busy.length; i++) {
+        console.log('ONE');
+        for (let j = 0; j < ((size < this.ships.busy[i].length) ? this.ships.busy[i].length : size); j++) {
+          console.log('TWO');
+          for (let k = 0; k < ((size > this.ships.busy[i].length) ? this.ships.busy[i].length : size); k++) {
+            console.log('THREE');
+            console.log(this.ships.busy[i][((size < this.ships.busy[i].length) ? j : k)].toString() + shipToCheck[((size > this.ships.busy[i].length) ? j : k)].toString());
+            if (this.ships.busy[i][((size < this.ships.busy[i].length) ? j : k)].toString() == shipToCheck[((size > this.ships.busy[i].length) ? j : k)].toString()) {
+              console.log('true');
+              this.check(size);
+            }
+          }
         }
       }
+      console.log('for done');
+      // return shipToCheck;
+    } else {
+
+      console.log('first ship generated ' + shipToCheck);
+      return shipToCheck;
     }
-    return shipToCheck;
   },
   ship(size) {
     const startPos = this.initial();
