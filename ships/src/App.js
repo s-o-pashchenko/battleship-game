@@ -62,26 +62,42 @@ const randomCoords = {
   },
   check(size) {
     console.log('start');
-    const shipToCheck = this.ship(size)
-    if (!!this.ships.busy[0]) {
-      for (let i = 0; i < this.ships.busy.length; i++) {
+    // Generate a new ship of the given size
+    const shipToCheck = this.ship(size);
+
+    // Get the list of busy cells on the game board
+    const busy = this.ships.busy;
+    console.log(busy);
+
+    // Check if there are any busy cells
+    if (busy.length > 0) {
+      // Loop through each busy ship
+      for (let i = 0; i < busy.length; i++) {
         console.log('ONE');
-        for (let j = 0; j < ((size < this.ships.busy[i].length) ? this.ships.busy[i].length : size); j++) {
+        console.log(busy);
+
+        // Loop through each cell of the ship to be checked
+        for (let j = 0; j < ((size < busy[i].length) ? busy[i].length : size); j++) {
           console.log('TWO');
-          for (let k = 0; k < ((size > this.ships.busy[i].length) ? this.ships.busy[i].length : size); k++) {
+          // Loop through each cell of the busy ship
+          for (let k = 0; k < ((size > busy[i].length) ? busy[i].length : size); k++) {
             console.log('THREE');
-            console.log(this.ships.busy[i][((size < this.ships.busy[i].length) ? j : k)].toString() + shipToCheck[((size > this.ships.busy[i].length) ? j : k)].toString());
-            if (this.ships.busy[i][((size < this.ships.busy[i].length) ? j : k)].toString() == shipToCheck[((size > this.ships.busy[i].length) ? j : k)].toString()) {
+            // Compare the cell of the busy ship with the cell of the ship to be checked
+            console.log(busy[i][((size < busy[i].length) ? j : k)].toString() + shipToCheck[((size > busy[i].length) ? j : k)].toString());
+            if (busy[i][((size < busy[i].length) ? j : k)].toString() === shipToCheck[((size > busy[i].length) ? j : k)].toString()) {
+              // If there is an overlap, recursively call the check function
               console.log('true');
-              this.check(size);
+              return this.check(size);
             }
           }
         }
       }
       console.log('for done');
-      // return shipToCheck;
+      // The function currently doesn't return anything here
+      // It may be intended to return the shipToCheck if no overlap is found, but that part is commented out
+      return shipToCheck;
     } else {
-
+      // If there are no busy cells, log the generated ship and return it
       console.log('first ship generated ' + shipToCheck);
       return shipToCheck;
     }
@@ -123,6 +139,8 @@ randomCoords.shipsToGen()
 
 function changeTable() {
   const ship = randomCoords.ships.busy;
+  console.log(playMap);
+  console.log(ship);
   for (let i = 0; i < ship.length; i++) {
     for (let j = 0; j < ship[i].length; j++) {
       playMap[ship[i][j][0]].array[ship[i][j][1]].ship = 1;
