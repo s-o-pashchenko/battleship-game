@@ -26,6 +26,9 @@ class Row {
     return this.array[x].id;
   }
 }
+function between(x, min, max) {
+  return x >= min && x <= max;
+}
 
 let playMap = []
 
@@ -73,28 +76,19 @@ const randomCoords = {
     if (busy.length > 0) {
       // Loop through each busy ship
       for (let i = 0; i < busy.length; i++) {
-        console.log('ONE');
-        console.log(busy);
-
         // Loop through each cell of the ship to be checked
         for (let j = 0; j < ((size < busy[i].length) ? busy[i].length : size); j++) {
-          console.log('TWO');
           // Loop through each cell of the busy ship
           for (let k = 0; k < ((size > busy[i].length) ? busy[i].length : size); k++) {
-            console.log('THREE');
             // Compare the cell of the busy ship with the cell of the ship to be checked
-            console.log(busy[i][((size < busy[i].length) ? j : k)].toString() + shipToCheck[((size > busy[i].length) ? j : k)].toString());
             if (busy[i][((size < busy[i].length) ? j : k)].toString() === shipToCheck[((size > busy[i].length) ? j : k)].toString()) {
               // If there is an overlap, recursively call the check function
-              console.log('true');
               return this.check(size);
             }
           }
         }
       }
-      console.log('for done');
-      // The function currently doesn't return anything here
-      // It may be intended to return the shipToCheck if no overlap is found, but that part is commented out
+      // After whole chain of for loops if there is no matches it'll return the ship
       return shipToCheck;
     } else {
       // If there are no busy cells, log the generated ship and return it
@@ -164,7 +158,7 @@ function App() {
   return (
     <div>
       <table class="mx-auto">
-        {playMap.map(row => <tr id={row.rowId}>{row.array.map(field => <td id={field.id} class="w-10 h-10 border-2" onClick={() => hitTheMap(field.ship, field.id)}>{field.ship}</td>)}</tr>)}
+        {playMap.map(row => <tr id={row.rowId}>{row.array.map(field => <td id={field.id} class="w-10 h-10 border-2" onClick={() => hitTheMap(field.ship, field.id)}></td>)}</tr>)}
       </table>
     </div>
   );
