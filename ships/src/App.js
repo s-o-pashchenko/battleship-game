@@ -150,6 +150,13 @@ function changeTable() {
 
 changeTable();
 
+function hitTheMap(ship, id) {
+  if (ship == 1) {
+    document.getElementById(id).classList.add('bg-red');
+  } else {
+    document.getElementById(id).classList.add('bg-blue');
+  }
+}
 console.log(randomCoords.ships.busy);
 console.log(playMap);
 
@@ -157,7 +164,7 @@ function App() {
   return (
     <div>
       <table class="mx-auto">
-        {playMap.map(row => <tr id={row.rowId}>{row.array.map(field => <td id={field.id} class="w-10 h-10 border-2">{field.ship}</td>)}</tr>)}
+        {playMap.map(row => <tr id={row.rowId}>{row.array.map(field => <td id={field.id} class="w-10 h-10 border-2" onClick={() => hitTheMap(field.ship, field.id)}>{field.ship}</td>)}</tr>)}
       </table>
     </div>
   );
